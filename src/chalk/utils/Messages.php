@@ -25,6 +25,7 @@
 namespace chalk\utils;
 
 class Messages {
+
     /** @var int */
     private $version;
 
@@ -37,35 +38,35 @@ class Messages {
     /**
      * @param array $config
      */
-    public function __construct(array $config){
+    public function __construct(array $config) {
         $version = $config["default-language"];
-        $this->version = (isset($version) and is_int($version)) ? $version : 0;
+        $this->version = (isset($version) && is_int($version)) ? $version : 0;
 
         $defaultLanguage = $config["default-language"];
-        $this->defaultLanguage = (isset($defaultLanguage) and is_string($defaultLanguage)) ? $defaultLanguage : "en";
+        $this->defaultLanguage = (isset($defaultLanguage) && is_string($defaultLanguage)) ? $defaultLanguage : "en";
 
         $messages = $config["messages"];
-        $this->messages = (isset($messages) and is_array($messages)) ? $messages : [];
+        $this->messages = (isset($messages) && is_array($messages)) ? $messages : [];
     }
 
     /**
      * @return int
      */
-    public function getVersion(){
+    public function getVersion() {
         return $this->version;
     }
 
     /**
      * @return string
      */
-    public function getDefaultLanguage(){
+    public function getDefaultLanguage() {
         return $this->defaultLanguage;
     }
 
     /**
      * @return array
      */
-    public function getMessages(){
+    public function getMessages() {
         return $this->messages;
     }
 
@@ -75,27 +76,28 @@ class Messages {
      * @param string $language
      * @return null|string
      */
-    public function getMessage($key, $format = [], $language = ""){
-        if($language === ""){
+    public function getMessage($key, $format = [], $language = "") {
+        if ($language === "") {
             $language = $this->getDefaultLanguage();
         }
 
         $message = $this->getMessages()[$key];
-        if(!isset($message)){
+        if (!isset($message)) {
             return null;
         }
 
         $string = $message[$language];
-        if(!isset($string) and $language !== $this->getDefaultLanguage()){
+        if (!isset($string) && $language !== $this->getDefaultLanguage()) {
             $string = $message[$this->getDefaultLanguage()];
         }
 
-        if(isset($string)){
-            foreach($format as $key => $value){
+        if (isset($string)) {
+            foreach ($format as $key => $value) {
                 $string = str_replace("{%" . $key . "}", $value, $string);
             }
             return $string;
         }
         return null;
     }
+
 }
